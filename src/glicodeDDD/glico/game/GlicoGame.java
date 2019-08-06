@@ -1,13 +1,12 @@
-package glicodeDDD.glico;
+package glicodeDDD.glico.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
-import glico.Hands;
 import glicodeDDD.glico.player.NotWinOutPlayers;
 import glicodeDDD.glico.player.Player;
-import glicodeDDD.glico.player.Players;
 import glicodeDDD.glico.player.WinOutPlayers;
 
 public class GlicoGame {
@@ -26,55 +25,75 @@ public class GlicoGame {
 		setGamePoint();
 	}
 
-
 	public void start() {
-		while(!notWinOutPlayers.isLastOne()) {
-			// 手を決める。
-			// 勝者を判定する。
-			// 加点する。
-			// 勝ち抜けの移動を行う。
+		while (!notWinOutPlayers.isLastOne()) {
+			notWinOutPlayers.nextMoves();
+
+			announcementOfMoves();
+
+			NotWinOutPlayers winners = judgeWinner(notWinOutPlayers);
+
+			if (Objects.isNull(winners)) {
+				continue;
+			}
+
+			winners.getPoint();
+
+			WinOutPlayers winOutPlayers = notWinOutPlayers.winOutIfReached(gamePoint);
+
+			this.winOutPlayers.addAll(winOutPlayers);
 		}
+
+		announcementOfResults();
 	}
 
-	@SuppressWarnings("resource")
 	private void setGamePoint() {
 		System.out.println("何ポイント先取にしますか。数字で入力してください。");
 
 		this.gamePoint = new Point(scan.nextInt());
 	}
 
-
-	@SuppressWarnings("resource")
 	private void createPlayers() {
 		System.out.println("プレーヤー数を入力してください。数字で入力してください。");
 
 		int numberOfPlayers = scan.nextInt();
-		List<Player> players = new ArrayList<>(); 
+		List<Player> players = new ArrayList<>();
 
 		for (int i = 0; i < numberOfPlayers; i++) {
-			players.add(new Player("Player" + i+1 ));
+			players.add(new Player("Player" + i + 1));
 		}
 
 		this.notWinOutPlayers = new NotWinOutPlayers(players);
 	}
 
-	private Players judge(Hands hands) {
+	private NotWinOutPlayers judgeWinner(NotWinOutPlayers notWinOutPlayers) {
 
-		if (isDrawed(hands)) {
-			return new Players();
+		if (isDrawed(notWinOutPlayers)) {
+			return null;
 		}
 
-		return hands.getWinningPlayers();
+		return notWinOutPlayers.getWinners();
 	}
 
-	private boolean isDrawed(Hands hands) {
-		if (hands.hasAllSuits()) {
+	private boolean isDrawed(NotWinOutPlayers players) {
+
+		if (players.hasAllSuits()) {
 			return true;
 		}
-		if (hands.hasOnlyOneSuits()) {
+		if (players.hasOnlyOneSuits()) {
 			return true;
 		}
 		return false;
+	}
+
+	private void announcementOfResults() {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	private void announcementOfMoves() {
+		// TODO 自動生成されたメソッド・スタブ
+
 	}
 
 }

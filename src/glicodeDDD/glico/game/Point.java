@@ -1,4 +1,4 @@
-package glicodeDDD.glico;
+package glicodeDDD.glico.game;
 
 public class Point {
 

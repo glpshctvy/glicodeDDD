@@ -1,11 +1,12 @@
 package glicodeDDD.glico.player;
 
+import glicodeDDD.glico.game.Point;
+
 public class Player {
 
 	private PlayerId playerId;
 	private PlayerName playerName;
 	private PlayerPoint playerPoint;
-
 
 	public Player(String name) {
 		this.playerId = new PlayerId();
@@ -13,11 +14,21 @@ public class Player {
 		this.playerPoint = new PlayerPoint();
 	}
 
-	public void setNextMove() {
-
-	}
 	public PlayerId getPlayerId() {
 		return this.playerId;
+	}
+
+	PlayerPoint getPlayerPoint() {
+		return this.playerPoint;
+	}
+
+	PlayerName getPlayerName() {
+		return this.playerName;
+	}
+
+	void get(Point point) {
+		playerPoint.plus(point);
+		
 	}
 
 	@Override
@@ -25,10 +36,10 @@ public class Player {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof Player)){
+		if (!(obj instanceof Player)) {
 			return false;
 		}
-		Player other = (Player)obj;
+		Player other = (Player) obj;
 		return playerId.equals(other.getPlayerId());
 	}
 
@@ -37,4 +48,3 @@ public class Player {
 		return super.hashCode();
 	}
 }
-

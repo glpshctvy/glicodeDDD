@@ -1,6 +1,6 @@
 package glicodeDDD.glico.player;
 
-import glicodeDDD.glico.Point;
+import glicodeDDD.glico.game.Point;
 
 public class PlayerPoint {
 

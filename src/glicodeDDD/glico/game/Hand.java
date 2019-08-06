@@ -1,5 +1,7 @@
-package glicodeDDD.glico;
+package glicodeDDD.glico.game;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Hand {
@@ -29,6 +31,11 @@ public class Hand {
 	public Hand getDisadvantageousSuits(Hand hand) {
 		Suits disadvantageous = this.suits.getDisadvantageousSuits();
 		return new Hand(disadvantageous); 
+	}
+
+	public List<Hand> getSuits() {
+		List<Hand> hands = new ArrayList<>();
+		return null;
 	}
 }
 
