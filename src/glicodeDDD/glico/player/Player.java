@@ -7,11 +7,25 @@ public class Player {
 	private PlayerId playerId;
 	private PlayerName playerName;
 	private PlayerPoint playerPoint;
+	private boolean isComputer = false;
 
-	public Player(String name) {
-		this.playerId = new PlayerId();
-		this.playerName = new PlayerName(name);
-		this.playerPoint = new PlayerPoint();
+	private Player (PlayerId playerId, PlayerName playerName, PlayerPoint playerPoint, boolean isComputer) {
+		this.playerId = playerId;
+		this.playerName = playerName;
+		this.playerPoint = playerPoint;
+		this.isComputer = isComputer;
+	}
+
+	public static Player createPlayer(String name) {
+		return new Player(new PlayerId(), new PlayerName(name), new PlayerPoint(), false);
+	}
+
+	public static Player createComputer(String name) {
+		return new Player(new PlayerId(), new PlayerName(name), new PlayerPoint(), true);
+	}
+
+	public boolean isComputer() {
+		return this.isComputer;
 	}
 
 	public PlayerId getPlayerId() {
@@ -26,7 +40,7 @@ public class Player {
 		return this.playerName;
 	}
 
-	void get(Point point) {
+	void getPoint(Point point) {
 		playerPoint.plus(point);
 		
 	}

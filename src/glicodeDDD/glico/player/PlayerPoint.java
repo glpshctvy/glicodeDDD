@@ -18,4 +18,9 @@ public class PlayerPoint {
 		return this.point;
 	}
 
+	public boolean isReached(Point point) {
+		return this.point.isGreaterThan(point);
+	}
+	
+
 }

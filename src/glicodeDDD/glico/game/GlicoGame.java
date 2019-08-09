@@ -1,11 +1,14 @@
 package glicodeDDD.glico.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-import glicodeDDD.glico.player.NotWinOutPlayers;
+import glicodeDDD.glico.janken.Hand;
+import glicodeDDD.glico.janken.Hands;
+import glicodeDDD.glico.player.EntryPlayers;
 import glicodeDDD.glico.player.Player;
 import glicodeDDD.glico.player.WinOutPlayers;
 
@@ -17,21 +20,22 @@ public class GlicoGame {
 
 	private WinOutPlayers winOutPlayers;
 
-	private NotWinOutPlayers notWinOutPlayers;
+	private EntryPlayers entryPlayers;
 
 	public GlicoGame() {
-		scan = new Scanner(System.in);
+		this.scan = new Scanner(System.in);
+		this.winOutPlayers = new WinOutPlayers();
+
 		createPlayers();
 		setGamePoint();
 	}
 
 	public void start() {
-		while (!notWinOutPlayers.isLastOne()) {
-			notWinOutPlayers.nextMoves();
+		while (!this.entryPlayers.isLastOne()) {
 
-			announcementOfMoves();
+			this.entryPlayers.nextMoves(this.scan);
 
-			NotWinOutPlayers winners = judgeWinner(notWinOutPlayers);
+			EntryPlayers winners = judgeWinners(this.entryPlayers);
 
 			if (Objects.isNull(winners)) {
 				continue;
@@ -39,12 +43,17 @@ public class GlicoGame {
 
 			winners.getPoint();
 
-			WinOutPlayers winOutPlayers = notWinOutPlayers.winOutIfReached(gamePoint);
-
+			WinOutPlayers winOutPlayers = this.entryPlayers.winOutIfReached(this.gamePoint);
 			this.winOutPlayers.addAll(winOutPlayers);
+			this.entryPlayers.winOut(winOutPlayers);
 		}
 
 		announcementOfResults();
+	}
+
+	private void announcementOfWinner(EntryPlayers winners) {
+		// TODO 自動生成されたメソッド・スタブ
+		
 	}
 
 	private void setGamePoint() {
@@ -54,36 +63,55 @@ public class GlicoGame {
 	}
 
 	private void createPlayers() {
-		System.out.println("プレーヤー数を入力してください。数字で入力してください。");
-
-		int numberOfPlayers = scan.nextInt();
 		List<Player> players = new ArrayList<>();
 
+		System.out.println("プレーヤー数を入力してください。数字で入力してください。");
+		int numberOfPlayers = scan.nextInt();
+
 		for (int i = 0; i < numberOfPlayers; i++) {
-			players.add(new Player("Player" + i + 1));
+			players.add(Player.createPlayer("Player" + i + 1));
 		}
 
-		this.notWinOutPlayers = new NotWinOutPlayers(players);
+		System.out.println("コンピュータ数を入力してください。数字で入力してください。");
+		int numberOfComputer = scan.nextInt();
+
+		for (int i = 0; i < numberOfComputer; i++) {
+			players.add(Player.createComputer("Computer" + i + 1));
+		}
+
+		this.entryPlayers = EntryPlayers.entry(players);
 	}
 
-	private NotWinOutPlayers judgeWinner(NotWinOutPlayers notWinOutPlayers) {
+	private EntryPlayers judgeWinners(EntryPlayers entryPlayers) {
+		Hands hands = entryPlayers.everyOneHands();
 
-		if (isDrawed(notWinOutPlayers)) {
+		if (isDrawed(hands)) {
+			System.out.println("あいこです。");
 			return null;
 		}
+		Hand hand = hands.strongerHand();
 
-		return notWinOutPlayers.getWinners();
+		return entryPlayers.hasSameStuits(hand);
 	}
 
-	private boolean isDrawed(NotWinOutPlayers players) {
-
-		if (players.hasAllSuits()) {
+	private boolean isDrawed(Hands hands) {
+		if (hasAllSuits(hands)) {
 			return true;
 		}
-		if (players.hasOnlyOneSuits()) {
+		if (hasOnlyOneSuits(hands)) {
 			return true;
 		}
 		return false;
+	}
+
+
+	public boolean hasAllSuits(Hands hands) {
+		return hands.containsAll(Arrays.asList(Hand.values()));
+	}
+
+	public boolean hasOnlyOneSuits(Hands hands) {
+		Hand firstOneHand = hands.firstOne();
+		return hands.hasOnlyOneSuits(firstOneHand);
 	}
 
 	private void announcementOfResults() {

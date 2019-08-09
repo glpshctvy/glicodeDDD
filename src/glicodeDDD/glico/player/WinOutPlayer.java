@@ -1,13 +1,19 @@
 package glicodeDDD.glico.player;
 
+import glicodeDDD.glico.game.Rank;
+
 public class WinOutPlayer {
 
 	private Player player;
 
-	private int rank;
+	private Rank rank;
 
-	public WinOutPlayer(Player player, int rank) {
+	public WinOutPlayer(Player player) {
 		this.player = player;
-		this.rank = rank;
+		this.rank = Rank.current();
+	}
+
+	public Object getPlayer() {
+		return this.player;
 	}
 }
