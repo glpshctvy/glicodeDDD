@@ -9,5 +9,4 @@ public class PlayerId {
 	public PlayerId() {
 		this.id = UUID.randomUUID().toString();
 	}
-
 }

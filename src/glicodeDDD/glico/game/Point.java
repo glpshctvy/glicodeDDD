@@ -1,4 +1,4 @@
-package glicodeDDD.glico;
+package glicodeDDD.glico.game;
 
 public class Point {
 
@@ -16,4 +16,7 @@ public class Point {
 		return new Point(this.point + point.intValue());
 	} 
 
+	public boolean isGreaterThan(Point point) {
+		return this.point >= point.intValue();
+	}
 }

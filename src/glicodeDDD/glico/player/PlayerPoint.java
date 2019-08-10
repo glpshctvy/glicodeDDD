@@ -1,6 +1,6 @@
 package glicodeDDD.glico.player;
 
-import glicodeDDD.glico.Point;
+import glicodeDDD.glico.game.Point;
 
 public class PlayerPoint {
 
@@ -17,5 +17,10 @@ public class PlayerPoint {
 	public Point getPoint() {
 		return this.point;
 	}
+
+	public boolean isReached(Point point) {
+		return this.point.isGreaterThan(point);
+	}
+	
 
 }
