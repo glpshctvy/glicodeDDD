@@ -1,6 +1,7 @@
 package glicodeDDD.glico.janken;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 public class Hands {
 	private List<Hand> hands;
@@ -31,5 +32,11 @@ public class Hands {
 		Hand strongerSuits = firstOne().getDisadvantageousHand();
 
 		return this.hands.contains(strongerSuits) ? strongerSuits : firstOneSuits;
+	}
+
+	public String open() {
+		StringJoiner joiner = new StringJoiner(", ");
+		hands.forEach(hand -> joiner.add(hand.handName()));
+		return joiner.toString();
 	}
 }

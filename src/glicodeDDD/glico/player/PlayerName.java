@@ -7,8 +7,8 @@ public class PlayerName {
 		this.name = name;
 	}
 
-	public String getName() {
-		return name + "Ç≥ÇÒ";
+	public String value() {
+		return name + "„Åï„Çì";
 	}
 
 }

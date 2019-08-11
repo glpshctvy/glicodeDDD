@@ -19,7 +19,7 @@ public class EntryPlayer {
 		if(player.isComputer()) {
 			this.hand = Hand.anyOne();
 		} else {
-			System.out.println("”š‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B0:ƒO[A1:ƒp[A2:ƒ`ƒ‡ƒL");
+			System.out.println("æ•°å­—ã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚0:ã‚°ãƒ¼ã€1:ãƒ‘ãƒ¼ã€2:ãƒãƒ§ã‚­");
 			this.hand = Hand.select(scan.nextInt());
 		}
 	}
@@ -33,7 +33,7 @@ public class EntryPlayer {
 	}
 
 	public void getPoint() {
-		this.player.getPoint(this.hand.winningPoint());
+		this.player.addPoint(this.hand.winningPoint());
 	}
 
 	public boolean isReached(Point gamePoint) {

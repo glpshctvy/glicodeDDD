@@ -24,7 +24,6 @@ public class GlicoGame {
 
 	public GlicoGame() {
 		this.scan = new Scanner(System.in);
-		this.winOutPlayers = new WinOutPlayers();
 
 		createPlayers();
 		setGamePoint();
@@ -33,65 +32,98 @@ public class GlicoGame {
 	public void start() {
 		while (!this.entryPlayers.isLastOne()) {
 
-			this.entryPlayers.nextMoves(this.scan);
+			playersMoveNext();
 
-			EntryPlayers winners = judgeWinners(this.entryPlayers);
+			EntryPlayers winners = judgeWinners();
 
-			if (Objects.isNull(winners)) {
+			if(noWinner(winners)) {
 				continue;
 			}
+			announcementOfWinner(winners);
 
-			winners.getPoint();
+			winners.getWinPoint();
 
-			WinOutPlayers winOutPlayers = this.entryPlayers.winOutIfReached(this.gamePoint);
-			this.winOutPlayers.addAll(winOutPlayers);
-			this.entryPlayers.winOut(winOutPlayers);
-		}
-
+			winnersWinOutIfReachedGamePoint(winners);
+		};
 		announcementOfResults();
 	}
+	
+	private void playersMoveNext() {
+		this.entryPlayers.nextMoves(this.scan);
+	}
 
-	private void announcementOfWinner(EntryPlayers winners) {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
-		
+	private void winnersWinOutIfReachedGamePoint(EntryPlayers winners) {
+		WinOutPlayers winOutPlayers = winners.winOutIfReached(this.gamePoint);
+
+		if(noWinOut(winOutPlayers)) {
+			return;
+		}
+
+		winOutGame(winOutPlayers);
+	}
+
+	private void winOutGame(WinOutPlayers winOutPlayers) {
+		this.winOutPlayers.addAll(winOutPlayers);
+		this.entryPlayers.winOut(winOutPlayers);
+	}
+
+	private boolean noWinOut(WinOutPlayers winOutPlayers) {
+		return Objects.isNull(winOutPlayers);
+	}
+
+	private boolean noWinner(EntryPlayers winners) {
+		return Objects.isNull(winners);
 	}
 
 	private void setGamePoint() {
-		System.out.println("‰½ƒ|ƒCƒ“ƒgææ‚É‚µ‚Ü‚·‚©B”š‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B");
-
+		System.out.println("ä½•ãƒã‚¤ãƒ³ãƒˆå…ˆå–ã«ã—ã¾ã™ã‹ã€‚æ•°å­—ã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚");
 		this.gamePoint = new Point(scan.nextInt());
 	}
 
 	private void createPlayers() {
 		List<Player> players = new ArrayList<>();
 
-		System.out.println("ƒvƒŒ[ƒ„[”‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B”š‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B");
-		int numberOfPlayers = scan.nextInt();
-
-		for (int i = 0; i < numberOfPlayers; i++) {
-			players.add(Player.createPlayer("Player" + i + 1));
-		}
-
-		System.out.println("ƒRƒ“ƒsƒ…[ƒ^”‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B”š‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B");
-		int numberOfComputer = scan.nextInt();
-
-		for (int i = 0; i < numberOfComputer; i++) {
-			players.add(Player.createComputer("Computer" + i + 1));
-		}
-
+		players.addAll(createPlayUsers());
+		players.addAll(createComputers());
 		this.entryPlayers = EntryPlayers.entry(players);
+
+		this.winOutPlayers = new WinOutPlayers();
 	}
 
-	private EntryPlayers judgeWinners(EntryPlayers entryPlayers) {
-		Hands hands = entryPlayers.everyOneHands();
+	private List<Player> createPlayUsers() {
+		System.out.println("ãƒ—ãƒ¬ãƒ¼ãƒ¦ãƒ¼ã‚¶ãƒ¼æ•°ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚æ•°å­—ã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚");
+		int numberOfPlayUser = scan.nextInt();
+
+		List<Player> players = new ArrayList<>();
+		for (int i = 0; i < numberOfPlayUser; i++) {
+			players.add(Player.createPlayer("Player" + (i + 1)));
+		}
+		return players;
+	}
+
+	private List<Player> createComputers() {
+		System.out.println("ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿æ•°ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚æ•°å­—ã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚");
+		int numberOfComputer = scan.nextInt();
+
+		List<Player> players = new ArrayList<>();
+		for (int i = 0; i < numberOfComputer; i++) {
+			players.add(Player.createComputer("Computer" + (i + 1)));
+		}
+		return players;
+	}
+
+	private EntryPlayers judgeWinners() {
+		Hands hands = this.entryPlayers.everyOneHands();
+
+		System.out.println(hands.open());
 
 		if (isDrawed(hands)) {
-			System.out.println("‚ ‚¢‚±‚Å‚·B");
+			System.out.println("ã‚ã„ã“ã§ã™ã€‚");
 			return null;
 		}
 		Hand hand = hands.strongerHand();
 
-		return entryPlayers.hasSameStuits(hand);
+		return this.entryPlayers.hasSameStuits(hand);
 	}
 
 	private boolean isDrawed(Hands hands) {
@@ -104,7 +136,6 @@ public class GlicoGame {
 		return false;
 	}
 
-
 	public boolean hasAllSuits(Hands hands) {
 		return hands.containsAll(Arrays.asList(Hand.values()));
 	}
@@ -115,13 +146,11 @@ public class GlicoGame {
 	}
 
 	private void announcementOfResults() {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
-
+		System.out.println(this.winOutPlayers.getResult());
 	}
 
-	private void announcementOfMoves() {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
-
+	private void announcementOfWinner(EntryPlayers winners) {
+		System.out.println(winners.getNames());
 	}
 
 }

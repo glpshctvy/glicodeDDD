@@ -2,6 +2,7 @@ package glicodeDDD.glico.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class WinOutPlayers {
 	private List<WinOutPlayer> players;
@@ -25,5 +26,11 @@ public class WinOutPlayers {
 
 	List<WinOutPlayer> getList() {
 		return this.players;
+	}
+
+	public String getResult() {
+		StringJoiner joiner = new StringJoiner(", ");
+		this.players.forEach(players -> joiner.add(players.getResult()));
+		return joiner.toString();
 	}
 }

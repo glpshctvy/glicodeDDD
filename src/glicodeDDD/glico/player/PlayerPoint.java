@@ -11,7 +11,7 @@ public class PlayerPoint {
 	}
 
 	public void plus(Point point) {
-		this.point.plus(point);
+		this.point = this.point.plus(point);
 	}
 
 	public Point getPoint() {

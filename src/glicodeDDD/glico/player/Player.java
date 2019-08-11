@@ -40,7 +40,7 @@ public class Player {
 		return this.playerName;
 	}
 
-	void getPoint(Point point) {
+	void addPoint(Point point) {
 		playerPoint.plus(point);
 		
 	}

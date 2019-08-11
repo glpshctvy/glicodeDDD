@@ -8,7 +8,7 @@ import glicodeDDD.glico.game.Point;
 
 public enum Hand {
 
-	GLICO(Suits.ROCK, "ƒOƒŠƒR"), PINEAPPLE(Suits.PAPER , "ƒpƒCƒiƒbƒvƒ‹"), CHOCOLATE(Suits.SCISSORS, "ƒ`ƒ‡ƒRƒŒ[ƒg");
+	GLICO(Suits.ROCK, "ã‚°ãƒªã‚³"), PINEAPPLE(Suits.PAPER , "ãƒ‘ã‚¤ãƒŠãƒƒãƒ—ãƒ«"), CHOCOLATE(Suits.SCISSORS, "ãƒãƒ§ã‚³ãƒ¬ãƒ¼ãƒˆ");
 
 	private Suits suits;
 
@@ -56,7 +56,7 @@ public enum Hand {
 		return Arrays.asList(Hand.values());
 	}
 
-	public String suitsName() {
+	public String handName() {
 		return this.handName;
 	}
 

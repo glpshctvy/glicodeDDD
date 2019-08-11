@@ -18,4 +18,8 @@ public class Rank {
 	public static void countUp(int size) {
 		sequence += size;
 	}
+
+	public String getRank() {
+		return rank + "位";
+	}
 }

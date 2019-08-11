@@ -16,4 +16,8 @@ public class WinOutPlayer {
 	public Object getPlayer() {
 		return this.player;
 	}
+
+	public String getResult() {
+		return this.player.getPlayerName().value() + this.rank.getRank();
+	}
 }
