@@ -10,12 +10,12 @@ public class PlayerPoint {
 		this.point = new Point(0);
 	}
 
-	public void plus(Point point) {
-		this.point = this.point.plus(point);
-	}
-
 	public Point getPoint() {
 		return this.point;
+	}
+
+	public void plus(Point point) {
+		this.point = this.point.plus(point);
 	}
 
 	public boolean isReached(Point point) {

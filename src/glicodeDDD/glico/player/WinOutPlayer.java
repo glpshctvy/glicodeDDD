@@ -13,8 +13,12 @@ public class WinOutPlayer {
 		this.rank = Rank.current();
 	}
 
-	public Object getPlayer() {
+	public Player getPlayer() {
 		return this.player;
+	}
+
+	public Rank getRank() {
+		return this.rank;
 	}
 
 	public String getResult() {

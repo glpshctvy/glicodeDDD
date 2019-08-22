@@ -10,6 +10,7 @@ import glicodeDDD.glico.janken.Hand;
 import glicodeDDD.glico.janken.Hands;
 import glicodeDDD.glico.player.EntryPlayers;
 import glicodeDDD.glico.player.Player;
+import glicodeDDD.glico.player.WinOutPlayer;
 import glicodeDDD.glico.player.WinOutPlayers;
 
 public class GlicoGame {
@@ -22,6 +23,10 @@ public class GlicoGame {
 
 	private EntryPlayers entryPlayers;
 
+	/**
+	 * コンストラクタ<br>
+	 * グリコを開始する準備をする
+	 */
 	public GlicoGame() {
 		this.scan = new Scanner(System.in);
 
@@ -29,30 +34,41 @@ public class GlicoGame {
 		setGamePoint();
 	}
 
+	/**
+	 * グリコをスタートする。<br> 
+	 * プレーヤ－が最後の一人になるまでジャンケンを続け、最後の一人になったらグリコを終了し、結果発表をする。
+	 */
 	public void start() {
 		while (!this.entryPlayers.isLastOne()) {
 
-			playersMoveNext();
-
-			EntryPlayers winners = judgeWinners();
+			EntryPlayers winners = playJanken();
 
 			if(noWinner(winners)) {
 				continue;
 			}
+
 			announcementOfWinner(winners);
 
 			winners.getWinPoint();
 
-			winnersWinOutIfReachedGamePoint(winners);
+			winOutIfReachedGamePoint(winners);
 		};
+
 		announcementOfResults();
 	}
 	
+	private EntryPlayers playJanken() {
+		playersMoveNext();
+
+		return judgeWinner();
+
+	}
+
 	private void playersMoveNext() {
 		this.entryPlayers.nextMoves(this.scan);
 	}
 
-	private void winnersWinOutIfReachedGamePoint(EntryPlayers winners) {
+	private void winOutIfReachedGamePoint(EntryPlayers winners) {
 		WinOutPlayers winOutPlayers = winners.winOutIfReached(this.gamePoint);
 
 		if(noWinOut(winOutPlayers)) {
@@ -64,7 +80,7 @@ public class GlicoGame {
 
 	private void winOutGame(WinOutPlayers winOutPlayers) {
 		this.winOutPlayers.addAll(winOutPlayers);
-		this.entryPlayers.winOut(winOutPlayers);
+		this.entryPlayers.exit(winOutPlayers);
 	}
 
 	private boolean noWinOut(WinOutPlayers winOutPlayers) {
@@ -80,6 +96,9 @@ public class GlicoGame {
 		this.gamePoint = new Point(scan.nextInt());
 	}
 
+	/**
+	 * プレーヤーを作成する。
+	 */
 	private void createPlayers() {
 		List<Player> players = new ArrayList<>();
 
@@ -90,6 +109,10 @@ public class GlicoGame {
 		this.winOutPlayers = new WinOutPlayers();
 	}
 
+	/**
+	 * 参加人数分プレーヤーを作成する。
+	 * @return 参加プレーヤー
+	 */
 	private List<Player> createPlayUsers() {
 		System.out.println("プレーユーザー数を入力してください。数字で入力してください。");
 		int numberOfPlayUser = scan.nextInt();
@@ -101,6 +124,10 @@ public class GlicoGame {
 		return players;
 	}
 
+	/**
+	 * コンピュータを作成する。
+	 * @return コンピュータ
+	 */
 	private List<Player> createComputers() {
 		System.out.println("コンピュータ数を入力してください。数字で入力してください。");
 		int numberOfComputer = scan.nextInt();
@@ -112,11 +139,11 @@ public class GlicoGame {
 		return players;
 	}
 
-	private EntryPlayers judgeWinners() {
-		Hands hands = this.entryPlayers.everyOneHands();
+	private EntryPlayers judgeWinner() {
+		Hands hands = this.entryPlayers.throwEverybodysHands();
 
-		System.out.println(hands.open());
-
+		announcementOfEverybodysHands(hands);
+	
 		if (isDrawed(hands)) {
 			System.out.println("あいこです。");
 			return null;
@@ -146,11 +173,15 @@ public class GlicoGame {
 	}
 
 	private void announcementOfResults() {
+		this.winOutPlayers.add(new WinOutPlayer(this.entryPlayers.ofLastOne()));
 		System.out.println(this.winOutPlayers.getResult());
 	}
 
 	private void announcementOfWinner(EntryPlayers winners) {
-		System.out.println(winners.getNames());
+		System.out.println("勝者は" + winners.getNames() + "です。");
 	}
 
+	private void announcementOfEverybodysHands(Hands hands) {
+		System.out.println(hands.open());
+	}
 }

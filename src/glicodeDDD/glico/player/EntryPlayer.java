@@ -7,9 +7,9 @@ import glicodeDDD.glico.janken.Hand;
 
 public class EntryPlayer {
 
-	private Hand hand;
-
 	private Player player;
+
+	private Hand hand;
 
 	public EntryPlayer(Player player) {
 		this.player = player;
@@ -28,7 +28,7 @@ public class EntryPlayer {
 		return this.player;
 	}
 
-	public Hand openHand() {
+	public Hand getHand() {
 		return this.hand;
 	}
 

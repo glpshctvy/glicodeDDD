@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public class Hands {
+
 	private List<Hand> hands;
 
 	public Hands(List<Hand> hands) {

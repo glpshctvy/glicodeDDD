@@ -32,11 +32,11 @@ public class Player {
 		return this.playerId;
 	}
 
-	PlayerPoint getPlayerPoint() {
+	public PlayerPoint getPlayerPoint() {
 		return this.playerPoint;
 	}
 
-	PlayerName getPlayerName() {
+	public PlayerName getPlayerName() {
 		return this.playerName;
 	}
 

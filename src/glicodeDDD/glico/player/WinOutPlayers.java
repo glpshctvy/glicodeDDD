@@ -20,12 +20,18 @@ public class WinOutPlayers {
 	}
 	
 	public void addAll(WinOutPlayers players) {
-		if(players.getList().size() == 0) return;
-		this.players.addAll(players.getList());
+		if(players.isEmpty()) return;
+		this.players.addAll(players.players);
 	}
 
-	List<WinOutPlayer> getList() {
-		return this.players;
+	List<Player> getPlayers() {
+		List<Player> result = new ArrayList<>();
+		players.forEach(p -> result.add(p.getPlayer()));
+		return result;
+	}
+
+	public boolean isEmpty() {
+		return players.size() == 0;
 	}
 
 	public String getResult() {
